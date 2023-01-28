@@ -16,7 +16,7 @@ def home_view(request, *args, **kwargs):
     return render(request,'pages/home.html',context={},status=200)
 
 @api_view(['POST'])
-#@authentication_classes([SessionAuthentication, MyCustomAuth])
+@authentication_classes([SessionAuthentication])
 @permission_classes([IsAuthenticated])
 def tweet_create_view(request, *args, **kwargs):
     serializer = TweetCreateSerializer(data = request.POST)
@@ -35,6 +35,7 @@ def tweet_detail_view(request, tweet_id, *args, **kwargs):
     return Response(serializer.data)
 
 @api_view(['DELETE','POST'])
+@authentication_classes([SessionAuthentication])
 @permission_classes([IsAuthenticated])
 def tweet_delete_view(request, tweet_id, *args, **kwargs):
     qs=Tweet.objects.filter(id=tweet_id) #checking if tweet actually exists
@@ -48,6 +49,7 @@ def tweet_delete_view(request, tweet_id, *args, **kwargs):
     return Response({"message:":"Tweet removed"},status=200)
 
 @api_view(['POST'])
+@authentication_classes([SessionAuthentication])
 @permission_classes([IsAuthenticated])
 def tweet_action_view(request, *args, **kwargs):
     serializer = TweetActionSerializer(data = request.data)
